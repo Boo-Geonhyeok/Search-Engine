@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"strconv"
 	"strings"
 
@@ -63,5 +64,11 @@ func writeBookDetail(bookList models.BookList) {
 		if err := w.Write(row); err != nil {
 			log.Fatalln("error writing record to file", err)
 		}
+	}
+
+	// run bookMorpheme.py
+	c := exec.Command("python3", "./python/bookMorpheme.py")
+	if err := c.Run(); err != nil {
+		log.Fatal("Can't run bookMorpheme.py ", err)
 	}
 }

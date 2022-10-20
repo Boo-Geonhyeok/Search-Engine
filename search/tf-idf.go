@@ -9,6 +9,7 @@ func getTFIDF() []float64 {
 	records := getBookRecords()
 	frequencies := []map[string]int{}
 	searchMorpheme := getSearchMorpheme()
+
 	for _, record := range records {
 		rawString := strings.ReplaceAll(record[3][1:len(record[3])-1], "'", "")
 		nouns := strings.Split(rawString, ",")
@@ -65,9 +66,6 @@ func getIDF(frequencies []map[string]int, searchMorpheme []string) []float64 {
 	linkNum := len(frequencies)
 	IDFs := []float64{}
 	for _, word := range searchMorpheme {
-		if !strings.HasPrefix(word, " ") {
-			word = " " + word
-		}
 		wordExistPage := 0
 		for _, frequency := range frequencies {
 			if _, ok := frequency[word]; ok {

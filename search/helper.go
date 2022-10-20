@@ -31,13 +31,23 @@ func getSearchMorpheme() []string {
 	defer file.Close()
 
 	reader := csv.NewReader(file)
-	searchMorpheme, err := reader.ReadAll()
+	searchMorphemes, err := reader.ReadAll()
 	if err != nil {
 		log.Fatal("Can't Read File", err.Error())
 	}
 
-	rawString := strings.ReplaceAll(searchMorpheme[0][1][1:len(searchMorpheme[0][1])-1], "'", "")
+	morpheme := searchMorphemes[len(searchMorphemes)-1][1]
+
+	rawString := strings.ReplaceAll(morpheme[1:len(morpheme)-1], "'", "")
 	nouns := strings.Split(rawString, ",")
 
+	for index, word := range nouns {
+		if !strings.HasPrefix(word, " ") {
+			nouns[index] = " " + word
+		}
+		if strings.HasSuffix(word, " ") {
+			nouns[index] = word[:len(word)-1]
+		}
+	}
 	return nouns
 }
